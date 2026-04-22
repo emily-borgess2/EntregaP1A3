@@ -59,173 +59,227 @@
               <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
               <span class="badge-carrinho contador-carrinho">0</span>
             </button>
+
+                <div id="tela-pagamento" class="pagina">
+      <header class="topo-simples">
+        <span class="logo">Cognify</span>
+        <div class="topo-acoes">
+          <button type="button" class="btn-carrinho-topo" id="btnAbrirCarrinhoPagamento" aria-label="Carrinho de planos">
+            <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
+            <span class="badge-carrinho contador-carrinho">0</span>
+          </button>
+          <button type="button" class="link-voltar" id="voltarCadastroPagamento">← Cadastro</button>
+        </div>
+      </header>
+      <main class="conteudo-form">
+        <h2>Pagamento</h2>
+        <p class="ajuda">Resumo do que está no carrinho e forma de pagamento (simulação).</p>
+  
+        <section class="bloco-pagamento" aria-labelledby="tituloResumo">
+          <h3 id="tituloResumo">Resumo do pedido</h3>
+          <div id="listaResumoPagamento"></div>
+          <p class="total-pagamento" id="totalPagamento" aria-live="polite"></p>
+        </section>
+  
+        <form id="formPagamento" novalidate>
+          <fieldset>
+            <legend>Como deseja pagar?</legend>
+            <label class="opcao-pagamento">
+              <input type="radio" name="formaPagamento" value="pix" id="pagPix">
+              PIX (simulado)
+            </label>
+            <label class="opcao-pagamento">
+              <input type="radio" name="formaPagamento" value="cartao" id="pagCartao">
+              Cartão de crédito (simulado)
+            </label>
+            <label class="opcao-pagamento">
+              <input type="radio" name="formaPagamento" value="boleto" id="pagBoleto">
+              Boleto (simulado)
+            </label>
+          </fieldset>
+          <p class="msg-erro" id="msgErroPagamento" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primario btn-largo" id="btnPagarAgora">Pagar agora</button>
+        </form>
+      </main>
+    </div>
+  
+    <div id="tela-resumo" class="pagina">
+      <header class="topo-simples">
+        <span class="logo">Cognify</span>
+      </header>
+      <main class="conteudo-form">
+        <h2>Pronto</h2>
+        <p id="textoResumo">Você concluiu o fluxo do protótipo.</p>
+        <button type="button" class="btn btn-secundario" id="btnRecomecar">Voltar ao início</button>
+      </main>
+    </div>
+            </div>
+          </header>
+      
+          <main class="conteudo-form conteudo-saiba-mais">
+            <h2>Conheça os planos</h2>
+            <p class="ajuda">Compare os três planos. Use o carrinho para guardar o que te interessa. Para concluir, faça o cadastro.</p>
+      
+            <div class="lista-planos-saiba">
+              <article class="card-plano card-plano-saiba" data-plano="basico">
+                <h3>Básico</h3>
+                <p class="preco">Grátis (demo)</p>
+                <ul>
+                  <li>Poucos jogos</li>
+                  <li>Relatórios simples</li>
+                </ul>
+                <div class="linha-so-carrinho">
+                  <button type="button" class="btn btn-so-carrinho" data-plano="basico" title="Adicionar ao carrinho" aria-label="Adicionar plano Básico ao carrinho">
+                    <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
+                  </button>
+                </div>
+              </article>
+      
+              <article class="card-plano card-plano-saiba" data-plano="intermediario">
+                <h3>Intermediário</h3>
+                <p class="preco">R$ 29/mês</p>
+                <ul>
+                  <li>Mais jogos</li>
+                  <li>Parte dos relatórios</li>
+                </ul>
+                <div class="linha-so-carrinho">
+                  <button type="button" class="btn btn-so-carrinho" data-plano="intermediario" title="Adicionar ao carrinho" aria-label="Adicionar plano Intermediário ao carrinho">
+                    <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
+                  </button>
+                </div>
+              </article>
+      
+              <article class="card-plano card-plano-saiba" data-plano="premium">
+                <h3>Premium</h3>
+                <p class="preco">R$ 49/mês</p>
+                <ul>
+                  <li>Todos os jogos</li>
+                  <li>Relatórios completos</li>
+                </ul>
+                <div class="linha-so-carrinho">
+                  <button type="button" class="btn btn-so-carrinho" data-plano="premium" title="Adicionar ao carrinho" aria-label="Adicionar plano Premium ao carrinho">
+                    <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
+                  </button>
+                </div>
+              </article>
+            </div>
+            <button type="button" class="btn btn-primario btn-largo" id="btnFinalizarCompra">
+              Finalizar compra — ir para cadastro
+            </button>
+          </main>
+          
+              <div id="tela-cadastro" class="pagina">
+          <header class="topo-simples">
+            <span class="logo">Cognify</span>
+            <button type="button" class="link-voltar" id="voltarInicio1">← Início</button>
+          </header>
+          <main class="conteudo-form">
+            <h2>Cadastro</h2>
+            <p class="ajuda">Preencha os dados do responsável e da criança.</p>
+      
+            <form id="formCadastro" novalidate>
+              <fieldset>
+                <legend>Responsável</legend>
+                <label for="nomeResp">Nome completo</label>
+                <input type="text" id="nomeResp" name="nomeResp" autocomplete="name">
+      
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" autocomplete="email">
+      
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="new-password">
+              </fieldset>
+      
+              <fieldset>
+                <legend>Criança</legend>
+                <label for="nomeCrianca">Nome da criança</label>
+                <input type="text" id="nomeCrianca" name="nomeCrianca">
+      
+                <label for="idade">Idade</label>
+                <input type="number" id="idade" name="idade" min="3" max="17" placeholder="ex: 8">
+      
+                <label for="transtorno">Perfil (lista do sistema)</label>
+                <select id="transtorno" name="transtorno">
+                  <option value="">Selecione…</option>
+                  <option value="tdah">TDAH</option>
+                  <option value="tea">TEA (leve)</option>
+                  <option value="dislexia">Dislexia</option>
+                </select>
+              </fieldset>
+      
+              <p class="msg-erro" id="msgErroCadastro" role="alert" hidden></p>
+      
+              <button type="submit" class="btn btn-primario btn-largo" id="btnSubmitCadastro">Continuar para os planos</button>
+            </form>
+          </main>
+        </div>
+        </div>
+      <div id="tela-planos" class="pagina">
+        <header class="topo-simples">
+          <span class="logo">Cognify</span>
+          <div class="topo-acoes">
+            <button type="button" class="btn-carrinho-topo" id="btnAbrirCarrinhoPlanos" aria-label="Carrinho de planos">
+              <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
+              <span class="badge-carrinho contador-carrinho">0</span>
+            </button>
+            <button type="button" class="link-voltar" id="voltarCadastro">← Cadastro</button>
           </div>
         </header>
-    
-        <main class="conteudo-form conteudo-saiba-mais">
-          <h2>Conheça os planos</h2>
-          <p class="ajuda">Compare os três planos. Use o carrinho para guardar o que te interessa. Para concluir, faça o cadastro.</p>
-    
-          <div class="lista-planos-saiba">
-            <article class="card-plano card-plano-saiba" data-plano="basico">
+        <main class="conteudo-form">
+          <h2>Escolha um plano</h2>
+          <p class="ajuda">Simulação: o plano define o que a plataforma libera depois.</p>
+  
+          <div class="lista-planos">
+            <article class="card-plano" data-plano="basico">
               <h3>Básico</h3>
               <p class="preco">Grátis (demo)</p>
               <ul>
                 <li>Poucos jogos</li>
                 <li>Relatórios simples</li>
               </ul>
-              <div class="linha-so-carrinho">
+              <div class="linha-botoes-plano">
+                <button type="button" class="btn btn-secundario btn-escolher">Escolher</button>
                 <button type="button" class="btn btn-so-carrinho" data-plano="basico" title="Adicionar ao carrinho" aria-label="Adicionar plano Básico ao carrinho">
                   <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
                 </button>
               </div>
             </article>
     
-            <article class="card-plano card-plano-saiba" data-plano="intermediario">
+            <article class="card-plano" data-plano="intermediario">
               <h3>Intermediário</h3>
               <p class="preco">R$ 29/mês</p>
               <ul>
                 <li>Mais jogos</li>
                 <li>Parte dos relatórios</li>
               </ul>
-              <div class="linha-so-carrinho">
+              <div class="linha-botoes-plano">
+                <button type="button" class="btn btn-secundario btn-escolher">Escolher</button>
                 <button type="button" class="btn btn-so-carrinho" data-plano="intermediario" title="Adicionar ao carrinho" aria-label="Adicionar plano Intermediário ao carrinho">
                   <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
                 </button>
               </div>
             </article>
     
-            <article class="card-plano card-plano-saiba" data-plano="premium">
+            <article class="card-plano" data-plano="premium">
               <h3>Premium</h3>
               <p class="preco">R$ 49/mês</p>
               <ul>
                 <li>Todos os jogos</li>
                 <li>Relatórios completos</li>
               </ul>
-              <div class="linha-so-carrinho">
+              <div class="linha-botoes-plano">
+                <button type="button" class="btn btn-secundario btn-escolher">Escolher</button>
                 <button type="button" class="btn btn-so-carrinho" data-plano="premium" title="Adicionar ao carrinho" aria-label="Adicionar plano Premium ao carrinho">
                   <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
                 </button>
               </div>
             </article>
           </div>
-          <button type="button" class="btn btn-primario btn-largo" id="btnFinalizarCompra">
-            Finalizar compra — ir para cadastro
+    
+          <p class="msg-plano" id="msgPlanoSelecionado" aria-live="polite">Nenhum plano selecionado ainda.</p>
+    
+          <button type="button" class="btn btn-primario btn-largo" id="btnConfirmarPlano" disabled>
+            Confirmar plano
           </button>
         </main>
-        
-            <div id="tela-cadastro" class="pagina">
-        <header class="topo-simples">
-          <span class="logo">Cognify</span>
-          <button type="button" class="link-voltar" id="voltarInicio1">← Início</button>
-        </header>
-        <main class="conteudo-form">
-          <h2>Cadastro</h2>
-          <p class="ajuda">Preencha os dados do responsável e da criança.</p>
-    
-          <form id="formCadastro" novalidate>
-            <fieldset>
-              <legend>Responsável</legend>
-              <label for="nomeResp">Nome completo</label>
-              <input type="text" id="nomeResp" name="nomeResp" autocomplete="name">
-    
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" autocomplete="email">
-    
-              <label for="senha">Senha</label>
-              <input type="password" id="senha" name="senha" autocomplete="new-password">
-            </fieldset>
-    
-            <fieldset>
-              <legend>Criança</legend>
-              <label for="nomeCrianca">Nome da criança</label>
-              <input type="text" id="nomeCrianca" name="nomeCrianca">
-    
-              <label for="idade">Idade</label>
-              <input type="number" id="idade" name="idade" min="3" max="17" placeholder="ex: 8">
-    
-              <label for="transtorno">Perfil (lista do sistema)</label>
-              <select id="transtorno" name="transtorno">
-                <option value="">Selecione…</option>
-                <option value="tdah">TDAH</option>
-                <option value="tea">TEA (leve)</option>
-                <option value="dislexia">Dislexia</option>
-              </select>
-            </fieldset>
-    
-            <p class="msg-erro" id="msgErroCadastro" role="alert" hidden></p>
-    
-            <button type="submit" class="btn btn-primario btn-largo" id="btnSubmitCadastro">Continuar para os planos</button>
-          </form>
-        </main>
       </div>
-      </div>
-    <div id="tela-planos" class="pagina">
-      <header class="topo-simples">
-        <span class="logo">Cognify</span>
-        <div class="topo-acoes">
-          <button type="button" class="btn-carrinho-topo" id="btnAbrirCarrinhoPlanos" aria-label="Carrinho de planos">
-            <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
-            <span class="badge-carrinho contador-carrinho">0</span>
-          </button>
-          <button type="button" class="link-voltar" id="voltarCadastro">← Cadastro</button>
-        </div>
-      </header>
-      <main class="conteudo-form">
-        <h2>Escolha um plano</h2>
-        <p class="ajuda">Simulação: o plano define o que a plataforma libera depois.</p>
-
-        <div class="lista-planos">
-          <article class="card-plano" data-plano="basico">
-            <h3>Básico</h3>
-            <p class="preco">Grátis (demo)</p>
-            <ul>
-              <li>Poucos jogos</li>
-              <li>Relatórios simples</li>
-            </ul>
-            <div class="linha-botoes-plano">
-              <button type="button" class="btn btn-secundario btn-escolher">Escolher</button>
-              <button type="button" class="btn btn-so-carrinho" data-plano="basico" title="Adicionar ao carrinho" aria-label="Adicionar plano Básico ao carrinho">
-                <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
-              </button>
-            </div>
-          </article>
-  
-          <article class="card-plano" data-plano="intermediario">
-            <h3>Intermediário</h3>
-            <p class="preco">R$ 29/mês</p>
-            <ul>
-              <li>Mais jogos</li>
-              <li>Parte dos relatórios</li>
-            </ul>
-            <div class="linha-botoes-plano">
-              <button type="button" class="btn btn-secundario btn-escolher">Escolher</button>
-              <button type="button" class="btn btn-so-carrinho" data-plano="intermediario" title="Adicionar ao carrinho" aria-label="Adicionar plano Intermediário ao carrinho">
-                <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
-              </button>
-            </div>
-          </article>
-  
-          <article class="card-plano" data-plano="premium">
-            <h3>Premium</h3>
-            <p class="preco">R$ 49/mês</p>
-            <ul>
-              <li>Todos os jogos</li>
-              <li>Relatórios completos</li>
-            </ul>
-            <div class="linha-botoes-plano">
-              <button type="button" class="btn btn-secundario btn-escolher">Escolher</button>
-              <button type="button" class="btn btn-so-carrinho" data-plano="premium" title="Adicionar ao carrinho" aria-label="Adicionar plano Premium ao carrinho">
-                <svg class="svg-icone" aria-hidden="true"><use href="#icone-carrinho"></use></svg>
-              </button>
-            </div>
-          </article>
-        </div>
-  
-        <p class="msg-plano" id="msgPlanoSelecionado" aria-live="polite">Nenhum plano selecionado ainda.</p>
-  
-        <button type="button" class="btn btn-primario btn-largo" id="btnConfirmarPlano" disabled>
-          Confirmar plano
-        </button>
-      </main>
-    </div>
