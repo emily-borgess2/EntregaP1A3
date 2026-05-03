@@ -12,6 +12,21 @@
 
 // Chaves de armazenamento no navegador (localStorage)
 var CHAVE_CARRINHO = "cognify_carrinho_demo";
+var CHAVE_APOS_CADASTRO = "cognify_apos_cadastro";
+
+// Abre a tela de cadastro e define o que acontece depois do cadastro:
+function entrarCadastro(destinoAposCadastro) {
+  if (destinoAposCadastro === "pagamento") {
+    localStorage.setItem(CHAVE_APOS_CADASTRO, "pagamento");
+    document.getElementById("btnSubmitCadastro").textContent =
+      "Continuar para o pagamento";
+  } else {
+    localStorage.setItem(CHAVE_APOS_CADASTRO, "planos");
+    document.getElementById("btnSubmitCadastro").textContent =
+      "Continuar para os planos";
+  }
+  mostrarPagina("tela-cadastro");
+}
 
 // Lê carrinho do localStorage (sempre retorna um array)
 function obterCarrinho() {
@@ -70,8 +85,6 @@ function mostrarResumoCarrinho() {
 }
 
 // Troca de telas:
-// - remove "ativa" de todas
-// - adiciona "ativa" na tela indicada
 function mostrarPagina(id) {
   var paginas = document.querySelectorAll(".pagina");
   for (var i = 0; i < paginas.length; i++) {
@@ -92,10 +105,11 @@ document.getElementById("btnEntrar").onclick = function () {
 };
 
 document.getElementById("btnCriar").onclick = function () {
-  mostrarPagina("tela-cadastro");
+  entrarCadastro("planos");
 };
 
 document.getElementById("voltarInicio1").onclick = function () {
+  localStorage.removeItem(CHAVE_APOS_CADASTRO);
   mostrarPagina("tela-inicial");
 };
 
@@ -115,6 +129,10 @@ document.getElementById("btnAbrirCarrinhoSaibaMais").onclick = function () {
   mostrarResumoCarrinho();
 };
 
+document.getElementById("btnFinalizarCompra").onclick = function () {
+  entrarCadastro("pagamento");
+};
+
 // botoes de carrinho em cada card de plano
 document.body.addEventListener("click", function (ev) {
   var alvo = ev.target.closest(".btn-so-carrinho");
@@ -123,6 +141,54 @@ document.body.addEventListener("click", function (ev) {
   if (!cod) return;
   adicionarPlanoNoCarrinho(cod);
 });
+
+// ==========================
+// Eventos do CADASTRO
+// ==========================
+document.getElementById("formCadastro").onsubmit = function (e) {
+  e.preventDefault();
+
+  var nomeResp = document.getElementById("nomeResp").value.trim();
+  var email = document.getElementById("email").value.trim();
+  var senha = document.getElementById("senha").value;
+  var nomeCrianca = document.getElementById("nomeCrianca").value.trim();
+  var idade = document.getElementById("idade").value;
+  var transtorno = document.getElementById("transtorno").value;
+
+  var msg = document.getElementById("msgErroCadastro");
+  msg.hidden = true;
+  msg.textContent = "";
+
+  if (!nomeResp || !email || !senha || !nomeCrianca || !idade || !transtorno) {
+    msg.textContent = "Preencha todos os campos.";
+    msg.hidden = false;
+    return;
+  }
+
+  if (senha.length < 4) {
+    msg.textContent = "A senha deve ter pelo menos 4 caracteres (regra simples do prototipo).";
+    msg.hidden = false;
+    return;
+  }
+
+  var dados = {
+    nomeResp: nomeResp,
+    email: email,
+    nomeCrianca: nomeCrianca,
+    idade: idade,
+    transtorno: transtorno
+  };
+  localStorage.setItem("cognify_cadastro_demo", JSON.stringify(dados));
+
+  var depois = localStorage.getItem(CHAVE_APOS_CADASTRO);
+  localStorage.removeItem(CHAVE_APOS_CADASTRO);
+
+  if (depois === "pagamento") {
+    mostrarPagina("tela-pagamento");
+  } else {
+    mostrarPagina("tela-planos");
+  }
+};
 
 // ao carregar a pagina, mostra o numero certo no carrinho
 atualizarContadorCarrinho();
