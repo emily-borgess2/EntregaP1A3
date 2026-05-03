@@ -285,3 +285,186 @@ select:focus {
   font-size: 0.95rem;
   color: var(--texto-suave);
 }
+
+/*
+  Topo (direita): agrupa ações (Saiba mais, carrinho, voltar).
+  "flex-end" empurra tudo para a direita.
+*/
+.topo-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px 14px;
+}
+
+.btn-saiba-mais {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--destaque-escuro);
+  font-family: inherit;
+}
+
+.btn-saiba-mais:hover {
+  text-decoration: underline;
+}
+
+.btn-saiba-mais:focus {
+  outline: 2px solid var(--destaque);
+  outline-offset: 2px;
+}
+
+.svg-icone {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.btn-carrinho-topo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--texto);
+}
+
+.badge-carrinho {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 0.7rem;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 999px;
+  background: #c45c4a;
+  color: #fff;
+  font-weight: bold;
+}
+
+.linha-botoes-plano {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.linha-botoes-plano .btn-escolher {
+  flex: 1;
+  min-width: 120px;
+}
+
+.btn-so-carrinho {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid var(--destaque);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--destaque-escuro);
+  cursor: pointer;
+}
+
+.btn-so-carrinho:focus {
+  outline: 2px solid var(--destaque);
+  outline-offset: 2px;
+}
+
+/* tela "Saiba mais": tres planos na horizontal, so carrinho */
+.conteudo-saiba-mais {
+  max-width: 1100px;
+}
+
+.lista-planos-saiba {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.lista-planos-saiba .card-plano-saiba {
+  flex: 1 1 220px;
+  max-width: 340px;
+  min-width: 200px;
+}
+
+.linha-so-carrinho {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.linha-so-carrinho .btn-so-carrinho {
+  width: 52px;
+  height: 52px;
+}
+
+/* tela de pagamento */
+.bloco-pagamento {
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.bloco-pagamento h3 {
+  margin: 0 0 12px 0;
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+}
+
+.lista-resumo-pagamento {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--texto-suave);
+}
+
+.lista-resumo-pagamento li {
+  margin-bottom: 6px;
+}
+
+.total-pagamento {
+  margin: 14px 0 0 0;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
+.opcao-pagamento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.opcao-pagamento input {
+  width: auto;
+}
