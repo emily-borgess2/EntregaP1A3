@@ -45,11 +45,18 @@ body {
 }
 
 .logo {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.45rem;
-  font-weight: bold;
-  color: var(--logo);
-  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: clamp(52px, 9vw, 72px);
+  width: auto;
+  max-width: min(360px, 90vw);
+  object-fit: contain;
+  display: block;
 }
 
 .link-voltar {
