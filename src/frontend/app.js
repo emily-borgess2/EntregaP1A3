@@ -10,6 +10,9 @@
   Observação: é propositalmente simples (nível iniciante).
 */
 
+// Guarda qual plano foi selecionado na tela "Escolha um plano"
+var planoEscolhido = null;
+
 // Chaves de armazenamento no navegador (localStorage)
 var CHAVE_CARRINHO = "cognify_carrinho_demo";
 var CHAVE_APOS_CADASTRO = "cognify_apos_cadastro";
@@ -113,6 +116,10 @@ document.getElementById("voltarInicio1").onclick = function () {
   mostrarPagina("tela-inicial");
 };
 
+document.getElementById("voltarCadastro").onclick = function () {
+  mostrarPagina("tela-cadastro");
+};
+
 document.getElementById("btnSaibaMais").onclick = function () {
   mostrarPagina("tela-saiba-mais");
 };
@@ -126,6 +133,10 @@ document.getElementById("btnAbrirCarrinho").onclick = function () {
 };
 
 document.getElementById("btnAbrirCarrinhoSaibaMais").onclick = function () {
+  mostrarResumoCarrinho();
+};
+
+document.getElementById("btnAbrirCarrinhoPlanos").onclick = function () {
   mostrarResumoCarrinho();
 };
 
@@ -187,7 +198,49 @@ document.getElementById("formCadastro").onsubmit = function (e) {
     mostrarPagina("tela-pagamento");
   } else {
     mostrarPagina("tela-planos");
+    resetPlanos();
   }
+};
+
+// ==========================
+// TELA DE PLANOS (pós-cadastro)
+// ==========================
+function resetPlanos() {
+  planoEscolhido = null;
+  var cards = document.querySelectorAll("#tela-planos .card-plano");
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].classList.remove("selecionado");
+  }
+  document.getElementById("msgPlanoSelecionado").textContent =
+    "Nenhum plano selecionado ainda.";
+  document.getElementById("btnConfirmarPlano").disabled = true;
+}
+
+var botoesEscolher = document.querySelectorAll("#tela-planos .btn-escolher");
+for (var j = 0; j < botoesEscolher.length; j++) {
+  botoesEscolher[j].onclick = function () {
+    var card = this.closest(".card-plano");
+    if (!card) return;
+
+    var todos = document.querySelectorAll("#tela-planos .card-plano");
+    for (var k = 0; k < todos.length; k++) {
+      todos[k].classList.remove("selecionado");
+    }
+    card.classList.add("selecionado");
+
+    planoEscolhido = card.getAttribute("data-plano");
+    var nomes = { basico: "Básico", intermediario: "Intermediário", premium: "Premium" };
+    document.getElementById("msgPlanoSelecionado").textContent =
+      "Plano selecionado: " + nomes[planoEscolhido] + ".";
+    document.getElementById("btnConfirmarPlano").disabled = false;
+  };
+}
+
+document.getElementById("btnConfirmarPlano").onclick = function () {
+  if (!planoEscolhido) return;
+  localStorage.setItem("cognify_plano_demo", planoEscolhido);
+  salvarCarrinho([planoEscolhido]);
+  mostrarPagina("tela-pagamento");
 };
 
 // ao carregar a pagina, mostra o numero certo no carrinho
