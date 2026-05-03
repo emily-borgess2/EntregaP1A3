@@ -31,6 +31,79 @@ function entrarCadastro(destinoAposCadastro) {
   mostrarPagina("tela-cadastro");
 }
 
+// Preço mensal por plano (valores demo)
+function precoPlanoMensal(cod) {
+  if (cod === "basico") return 0;
+  if (cod === "intermediario") return 29;
+  if (cod === "premium") return 49;
+  return 0;
+}
+
+// Conta quantos itens de cada tipo existem no carrinho
+function contarItensCarrinho() {
+  var lista = obterCarrinho();
+  var o = { basico: 0, intermediario: 0, premium: 0 };
+  for (var i = 0; i < lista.length; i++) {
+    var k = lista[i];
+    if (o[k] !== undefined) {
+      o[k]++;
+    }
+  }
+  return o;
+}
+
+// Regra simples: se tiver Premium no carrinho, "vence".
+function planoPrincipalDoCarrinho() {
+  var c = contarItensCarrinho();
+  if (c.premium > 0) return "premium";
+  if (c.intermediario > 0) return "intermediario";
+  if (c.basico > 0) return "basico";
+  return "basico";
+}
+
+// Monta a tela de pagamento (resumo e total) usando o carrinho
+function montarTelaPagamento() {
+  document.getElementById("formPagamento").reset();
+  var msgPg = document.getElementById("msgErroPagamento");
+  msgPg.hidden = true;
+  msgPg.textContent = "";
+
+  var el = document.getElementById("listaResumoPagamento");
+  var totalEl = document.getElementById("totalPagamento");
+  var lista = obterCarrinho();
+
+  if (lista.length === 0) {
+    el.innerHTML =
+      '<p class="ajuda">Seu carrinho está vazio. Volte em <strong>Conheça os planos</strong> para adicionar itens.</p>' +
+      '<button type="button" class="btn btn-secundario" id="btnIrPlanosPagamento">Ver planos</button>';
+    totalEl.textContent = "";
+    document.getElementById("btnIrPlanosPagamento").onclick = function () {
+      mostrarPagina("tela-saiba-mais");
+    };
+    return;
+  }
+
+  var contagem = contarItensCarrinho();
+  var nomes = nomesPlanos();
+  var html = '<ul class="lista-resumo-pagamento">';
+  var total = 0;
+  var ordem = ["basico", "intermediario", "premium"];
+  for (var t = 0; t < ordem.length; t++) {
+    var cod = ordem[t];
+    var q = contagem[cod];
+    if (q < 1) continue;
+    var unit = precoPlanoMensal(cod);
+    var sub = unit * q;
+    total += sub;
+    var precoTxt =
+      unit === 0 ? "grátis (demo)" : "R$ " + unit + "/mês x " + q + " = R$ " + sub + "/mês";
+    html += "<li>" + q + "x " + nomes[cod] + " — " + precoTxt + "</li>";
+  }
+  html += "</ul>";
+  el.innerHTML = html;
+  totalEl.textContent = "Total estimado (demo): R$ " + total + "/mês";
+}
+
 // Lê carrinho do localStorage (sempre retorna um array)
 function obterCarrinho() {
   try {
@@ -97,6 +170,9 @@ function mostrarPagina(id) {
   if (alvo) {
     alvo.classList.add("ativa");
   }
+  if (id === "tela-pagamento") {
+    montarTelaPagamento();
+  }
   atualizarContadorCarrinho();
 }
 
@@ -138,6 +214,14 @@ document.getElementById("btnAbrirCarrinhoSaibaMais").onclick = function () {
 
 document.getElementById("btnAbrirCarrinhoPlanos").onclick = function () {
   mostrarResumoCarrinho();
+};
+
+document.getElementById("btnAbrirCarrinhoPagamento").onclick = function () {
+  mostrarResumoCarrinho();
+};
+
+document.getElementById("voltarCadastroPagamento").onclick = function () {
+  entrarCadastro("pagamento");
 };
 
 document.getElementById("btnFinalizarCompra").onclick = function () {
@@ -203,6 +287,63 @@ document.getElementById("formCadastro").onsubmit = function (e) {
 };
 
 // ==========================
+// Eventos do PAGAMENTO
+// ==========================
+document.getElementById("formPagamento").onsubmit = function (e) {
+  e.preventDefault();
+  var err = document.getElementById("msgErroPagamento");
+  err.hidden = true;
+  err.textContent = "";
+
+  if (obterCarrinho().length === 0) {
+    err.textContent =
+      "Não há itens no carrinho. Volte em Conheça os planos ou escolha outro fluxo.";
+    err.hidden = false;
+    return;
+  }
+
+  var radios = document.getElementsByName("formaPagamento");
+  var escolha = "";
+  for (var r = 0; r < radios.length; r++) {
+    if (radios[r].checked) {
+      escolha = radios[r].value;
+      break;
+    }
+  }
+  if (!escolha) {
+    err.textContent = "Escolha uma forma de pagamento.";
+    err.hidden = false;
+    return;
+  }
+
+  var nomesPg = { pix: "PIX", cartao: "cartão de crédito", boleto: "boleto" };
+  var plano = planoPrincipalDoCarrinho();
+  localStorage.setItem("cognify_plano_demo", plano);
+  salvarCarrinho([]);
+
+  var cadastroStr = localStorage.getItem("cognify_cadastro_demo");
+  var nomeCrianca = "a criança";
+  if (cadastroStr) {
+    try {
+      var c = JSON.parse(cadastroStr);
+      if (c.nomeCrianca) nomeCrianca = c.nomeCrianca;
+    } catch (err2) {}
+  }
+
+  document.getElementById("textoResumo").textContent =
+    "Pagamento efetuado com sucesso! " +
+    "Cadastro salvo (demo). Forma de pagamento: " +
+    nomesPg[escolha] +
+    ". Plano: " +
+    plano +
+    ". Perfil de " +
+    nomeCrianca +
+    " registrado.";
+
+  mostrarPagina("tela-resumo");
+};
+
+// ==========================
 // TELA DE PLANOS (pós-cadastro)
 // ==========================
 function resetPlanos() {
@@ -241,6 +382,10 @@ document.getElementById("btnConfirmarPlano").onclick = function () {
   localStorage.setItem("cognify_plano_demo", planoEscolhido);
   salvarCarrinho([planoEscolhido]);
   mostrarPagina("tela-pagamento");
+};
+
+document.getElementById("btnRecomecar").onclick = function () {
+  mostrarPagina("tela-inicial");
 };
 
 // ao carregar a pagina, mostra o numero certo no carrinho
