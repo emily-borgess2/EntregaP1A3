@@ -1,0 +1,549 @@
+/* Cognify - estilos globais simples */
+
+:root {
+  --cor-primaria: #5b7fa5;
+  --cor-primaria-escura: #4a6a8a;
+  --cor-secundaria: #a8c5a0;
+  --cor-fundo: #f5f7fa;
+  --cor-card: #ffffff;
+  --cor-texto: #2d3748;
+  --cor-texto-claro: #718096;
+  --cor-erro: #c53030;
+  --cor-sucesso: #276749;
+  --cor-borda: #e2e8f0;
+  --sombra: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --raio: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.6;
+}
+
+/* Layout */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudo-principal {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.rodape {
+  text-align: center;
+  padding: 1rem;
+  background: var(--cor-card);
+  border-top: 1px solid var(--cor-borda);
+  color: var(--cor-texto-claro);
+  font-size: 0.85rem;
+}
+
+/* Navbar */
+.navbar {
+  background: var(--cor-card);
+  border-bottom: 1px solid var(--cor-borda);
+  box-shadow: var(--sombra);
+}
+
+.navbar-conteudo {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--cor-primaria);
+  text-decoration: none;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.menu a {
+  text-decoration: none;
+  color: var(--cor-texto);
+  font-weight: 500;
+}
+
+.menu a:hover {
+  color: var(--cor-primaria);
+}
+
+/* Botões */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: var(--raio);
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.btn-primario {
+  background: var(--cor-primaria);
+  color: white;
+}
+
+.btn-primario:hover {
+  background: var(--cor-primaria-escura);
+}
+
+.btn-secundario {
+  background: var(--cor-secundaria);
+  color: var(--cor-texto);
+}
+
+.btn-perigo {
+  background: #fed7d7;
+  color: var(--cor-erro);
+}
+
+.btn-pequeno {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-largo {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--cor-primaria);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: inherit;
+}
+
+/* Páginas */
+.pagina {
+  padding: 1rem 0;
+}
+
+.pagina h1 {
+  margin-bottom: 0.5rem;
+  color: var(--cor-primaria);
+}
+
+.texto-ajuda {
+  color: var(--cor-texto-claro);
+  margin-bottom: 1.5rem;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: var(--cor-card);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  margin-bottom: 2rem;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  color: var(--cor-texto-claro);
+}
+
+/* Seções */
+.secao {
+  margin-bottom: 2rem;
+}
+
+.secao h2 {
+  margin-bottom: 1rem;
+  color: var(--cor-primaria);
+}
+
+/* Cards informativos */
+.cards-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card-info {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  text-align: center;
+}
+
+.icone-info {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.card-info h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* Grid de jogos */
+.grid-jogos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.card-jogo {
+  background: var(--cor-card);
+  padding: 1.2rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-jogo-icone {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.card-jogo h3 {
+  font-size: 1.05rem;
+}
+
+.tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: var(--cor-primaria);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.preco {
+  font-weight: bold;
+  color: var(--cor-primaria);
+  font-size: 1.1rem;
+}
+
+.preco-grande {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--cor-primaria);
+  margin: 0.5rem 0;
+}
+
+/* Formulários */
+.campo {
+  margin-bottom: 1rem;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: 2px solid var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}
+
+/* Filtros */
+.filtros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Mensagens */
+.msg-erro {
+  color: var(--cor-erro);
+  background: #fff5f5;
+  padding: 0.6rem;
+  border-radius: var(--raio);
+  margin-bottom: 1rem;
+}
+
+.msg-sucesso {
+  color: var(--cor-sucesso);
+  background: #f0fff4;
+  padding: 0.6rem;
+  border-radius: var(--raio);
+  margin-bottom: 1rem;
+}
+
+/* Login */
+.pagina-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.login-card {
+  background: var(--cor-card);
+  padding: 2rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card h1 {
+  text-align: center;
+  color: var(--cor-primaria);
+}
+
+.subtitulo {
+  text-align: center;
+  color: var(--cor-texto-claro);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.login-alternar {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.login-dica {
+  margin-top: 1.5rem;
+  padding: 0.8rem;
+  background: var(--cor-fundo);
+  border-radius: var(--raio);
+  font-size: 0.85rem;
+  color: var(--cor-texto-claro);
+}
+
+/* Detalhe do jogo */
+.detalhe-jogo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.detalhe-adaptacao {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.simulador {
+  margin: 1rem 0;
+}
+
+.resultado-adaptacao {
+  background: var(--cor-fundo);
+  padding: 1rem;
+  border-radius: var(--raio);
+  margin-top: 1rem;
+}
+
+.resultado-adaptacao p {
+  margin-bottom: 0.3rem;
+}
+
+/* Avaliações */
+.secao-avaliacoes {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.form-avaliacao {
+  margin: 1rem 0;
+}
+
+.lista-comentarios {
+  margin-top: 1rem;
+}
+
+.comentario-item {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+/* Carrinho */
+.lista-carrinho {
+  list-style: none;
+}
+
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--cor-card);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  margin-bottom: 0.8rem;
+}
+
+.total-carrinho {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.pagamento {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  margin-top: 1rem;
+}
+
+.carrinho-vazio,
+.historico-vazio {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Histórico */
+.lista-historico {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.card-historico {
+  background: var(--cor-card);
+  padding: 1rem 1.2rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.historico-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.historico-valor {
+  font-weight: bold;
+  color: var(--cor-primaria);
+}
+
+/* Relatórios */
+.cards-indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card-indicador {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  text-align: center;
+}
+
+.indicador-numero {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--cor-primaria);
+}
+
+.indicador-label {
+  font-size: 0.85rem;
+  color: var(--cor-texto-claro);
+}
+
+.secao-grafico {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  margin-bottom: 1.5rem;
+}
+
+.secao-grafico h2 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+  .navbar-conteudo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .detalhe-jogo {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .historico-cabecalho {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
