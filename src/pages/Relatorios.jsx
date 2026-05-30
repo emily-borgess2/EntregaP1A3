@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 import { getJogosMaisVendidos, getHistorico, getCategorias, getJogos } from '../services/api'
+import { getCrianca, getSessoes } from '../services/dadosLocais'
 
-// Cores suaves para os gráficos
 const CORES = ['#7c9cbf', '#a8c5a0', '#d4a5a5', '#c9b8d9', '#f0c987']
 
 function Relatorios() {
+  const crianca = getCrianca()
+  const sessoes = getSessoes()
+
   const [topJogos, setTopJogos] = useState([])
   const [vendas, setVendas] = useState([])
   const [dadosPizza, setDadosPizza] = useState([])
@@ -23,7 +26,6 @@ function Relatorios() {
         setTopJogos(maisVendidos || [])
         setVendas(historico || [])
 
-        // Monta dados do gráfico de pizza por categoria
         if (jogos && categorias) {
           const contagem = {}
           categorias.forEach(function (cat) {
@@ -49,16 +51,28 @@ function Relatorios() {
     carregar()
   }, [])
 
-  // Indicadores simples
   const totalCompras = vendas.length
   const valorTotal = vendas.reduce(function (soma, v) {
     return soma + Number(v.valor_total)
   }, 0)
-  const totalItens = vendas.reduce(function (soma, v) {
-    return soma + Number(v.quantidade)
-  }, 0)
 
-  // Prepara dados do gráfico de barras
+  // Dados das sessões da criança
+  const totalAcertos = sessoes.reduce(function (s, x) { return s + x.acertos }, 0)
+  const totalErros = sessoes.reduce(function (s, x) { return s + x.erros }, 0)
+
+  const dadosSessoes = sessoes.map(function (s, i) {
+    return {
+      nome: 'Sessão ' + (i + 1),
+      acertos: s.acertos,
+      erros: s.erros
+    }
+  })
+
+  const dadosDesempenho = [
+    { name: 'Acertos', value: totalAcertos },
+    { name: 'Erros', value: totalErros }
+  ]
+
   const dadosBarras = topJogos.map(function (j) {
     return {
       nome: j.nome.length > 15 ? j.nome.substring(0, 15) + '...' : j.nome,
@@ -69,30 +83,82 @@ function Relatorios() {
   return (
     <div className="pagina">
       <h1>Relatórios</h1>
-      <p className="texto-ajuda">
-        Gráficos simples para acompanhar vendas e catálogo de jogos.
-      </p>
+      {crianca && (
+        <p className="texto-ajuda">
+          Desempenho de <strong>{crianca.nome}</strong> e dados da plataforma.
+        </p>
+      )}
 
       {carregando && <p>Carregando relatórios...</p>}
       {erro && <p className="msg-erro" role="alert">{erro}</p>}
 
-      {/* Cards com indicadores */}
       <div className="cards-indicadores">
+        <div className="card-indicador">
+          <span className="indicador-numero">{sessoes.length}</span>
+          <span className="indicador-label">Sessões da criança</span>
+        </div>
+        <div className="card-indicador">
+          <span className="indicador-numero">{totalAcertos}</span>
+          <span className="indicador-label">Acertos totais</span>
+        </div>
+        <div className="card-indicador">
+          <span className="indicador-numero">{totalErros}</span>
+          <span className="indicador-label">Erros totais</span>
+        </div>
         <div className="card-indicador">
           <span className="indicador-numero">{totalCompras}</span>
           <span className="indicador-label">Compras feitas</span>
         </div>
         <div className="card-indicador">
           <span className="indicador-numero">R$ {valorTotal.toFixed(2)}</span>
-          <span className="indicador-label">Valor total gasto</span>
-        </div>
-        <div className="card-indicador">
-          <span className="indicador-numero">{totalItens}</span>
-          <span className="indicador-label">Jogos comprados</span>
+          <span className="indicador-label">Valor gasto</span>
         </div>
       </div>
 
-      {/* Gráfico de barras - jogos mais vendidos */}
+      <section className="secao-grafico">
+        <h2>Desempenho por sessão — {crianca ? crianca.nome : 'criança'}</h2>
+        {dadosSessoes.length > 0 ? (
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={dadosSessoes}>
+              <XAxis dataKey="nome" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="acertos" fill="#a8c5a0" name="Acertos" />
+              <Bar dataKey="erros" fill="#d4a5a5" name="Erros" />
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <p>Jogue uma sessão para ver o desempenho aqui.</p>
+        )}
+      </section>
+
+      <section className="secao-grafico">
+        <h2>Acertos vs erros (total)</h2>
+        {totalAcertos + totalErros > 0 ? (
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={dadosDesempenho}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label
+              >
+                <Cell fill="#a8c5a0" />
+                <Cell fill="#d4a5a5" />
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        ) : (
+          <p>Sem dados de desempenho ainda.</p>
+        )}
+      </section>
+
       <section className="secao-grafico">
         <h2>Jogos mais vendidos</h2>
         {dadosBarras.length > 0 ? (
@@ -109,7 +175,6 @@ function Relatorios() {
         )}
       </section>
 
-      {/* Gráfico de pizza - jogos por categoria */}
       <section className="secao-grafico">
         <h2>Jogos por categoria</h2>
         {dadosPizza.length > 0 ? (
