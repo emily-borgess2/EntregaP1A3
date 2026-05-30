@@ -278,6 +278,42 @@ body {
   margin: 0 auto;
 }
 
+/* Planos */
+.grid-planos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-plano {
+  background: var(--cor-card);
+  padding: 1.5rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.card-plano--ativo {
+  border-color: var(--cor-primaria);
+}
+
+.plano-preco {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--cor-primaria);
+  margin: 0.5rem 0;
+}
+
+  background: var(--cor-card);
+  padding: 2rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
   margin-bottom: 1rem;
 }
 

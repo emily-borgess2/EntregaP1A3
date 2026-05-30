@@ -9,6 +9,7 @@ import Carrinho from './pages/Carrinho'
 import Historico from './pages/Historico'
 import Relatorios from './pages/Relatorios'
 import CadastroCrianca from './pages/CadastroCrianca'
+import Planos from './pages/Planos'
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro-crianca" element={
           <ProtectedRoute semOnboarding><CadastroCrianca /></ProtectedRoute>
+        } />
+        <Route path="/planos" element={
+          <ProtectedRoute semOnboarding><Planos /></ProtectedRoute>
         } />
         <Route path="/" element={
           <ProtectedRoute><Home /></ProtectedRoute>
