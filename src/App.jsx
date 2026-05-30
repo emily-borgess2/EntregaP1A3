@@ -8,12 +8,16 @@ import DetalheJogo from './pages/DetalheJogo'
 import Carrinho from './pages/Carrinho'
 import Historico from './pages/Historico'
 import Relatorios from './pages/Relatorios'
+import CadastroCrianca from './pages/CadastroCrianca'
 
 function App() {
   return (
     <Layout>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/cadastro-crianca" element={
+          <ProtectedRoute semOnboarding><CadastroCrianca /></ProtectedRoute>
+        } />
         <Route path="/" element={
           <ProtectedRoute><Home /></ProtectedRoute>
         } />

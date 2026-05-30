@@ -268,8 +268,16 @@ body {
   margin: 0.5rem 0;
 }
 
-/* Formulários */
-.campo {
+/* Formulários em card */
+.form-card {
+  background: var(--cor-card);
+  padding: 2rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
   margin-bottom: 1rem;
 }
 

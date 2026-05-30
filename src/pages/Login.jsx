@@ -31,7 +31,13 @@ function Login() {
       } else {
         const resposta = await login(email, senha)
         localStorage.setItem('cognify_token', resposta.token)
-        navigate('/')
+
+        // Redireciona conforme onboarding
+        const crianca = localStorage.getItem('cognify_crianca')
+        const plano = localStorage.getItem('cognify_plano')
+        if (!crianca) navigate('/cadastro-crianca')
+        else if (!plano) navigate('/planos')
+        else navigate('/dashboard')
       }
     } catch (err) {
       setErro(err.message)
