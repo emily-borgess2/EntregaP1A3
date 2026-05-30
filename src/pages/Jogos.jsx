@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { getJogos, getCategorias } from '../services/api'
-import { getPlano, PLANOS } from '../services/dadosLocais'
+import { getPlano, getCrianca, NOMES_PERFIL, PLANOS } from '../services/dadosLocais'
 import GameCard from '../components/GameCard'
 
 function Jogos() {
+  const crianca = getCrianca()
   const [jogos, setJogos] = useState([])
   const [categorias, setCategorias] = useState([])
   const [categoriaFiltro, setCategoriaFiltro] = useState('')
@@ -11,12 +12,14 @@ function Jogos() {
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(true)
 
+  const perfil = crianca ? crianca.transtorno : ''
+
   useEffect(function () {
     async function carregar() {
       setCarregando(true)
       setErro('')
       try {
-        const listaJogos = await getJogos()
+        const listaJogos = await getJogos(perfil, categoriaFiltro || null)
         const listaCategorias = await getCategorias()
         setJogos(listaJogos || [])
         setCategorias(listaCategorias || [])
@@ -26,21 +29,15 @@ function Jogos() {
       setCarregando(false)
     }
     carregar()
-  }, [])
+  }, [perfil, categoriaFiltro])
 
-  // Filtros simples no frontend (nome e categoria)
   const jogosFiltrados = jogos.filter(function (jogo) {
     if (busca && !jogo.nome.toLowerCase().includes(busca.toLowerCase())) {
       return false
     }
-    if (categoriaFiltro) {
-      const cat = categorias.find(c => c.id === jogo.fk_categoria)
-      if (!cat || cat.nome !== categoriaFiltro) return false
-    }
     return true
   })
 
-  // Limita jogos conforme o plano
   const planoId = getPlano()
   const limite = planoId ? PLANOS[planoId].limiteJogos : 4
   const jogosDoPlano = jogosFiltrados.slice(0, limite)
@@ -49,9 +46,12 @@ function Jogos() {
   return (
     <div className="pagina">
       <h1>Jogos educativos</h1>
-      <p className="texto-ajuda">
-        Plano {nomePlano}: até {limite} jogos disponíveis. Escolha um e clique em "Ver detalhes" para jogar.
-      </p>
+      {crianca && (
+        <p className="texto-ajuda">
+          Jogos para <strong>{crianca.nome}</strong> — perfil <strong>{NOMES_PERFIL[perfil]}</strong>.
+          Plano {nomePlano}: até {limite} jogos. Sem preço individual — inclusos na assinatura.
+        </p>
+      )}
 
       <div className="filtros">
         <div className="campo">
@@ -90,7 +90,7 @@ function Jogos() {
       </div>
 
       {!carregando && jogosDoPlano.length === 0 && (
-        <p>Nenhum jogo encontrado com esse filtro.</p>
+        <p>Nenhum jogo encontrado para este perfil.</p>
       )}
     </div>
   )

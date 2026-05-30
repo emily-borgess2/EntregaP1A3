@@ -1,14 +1,40 @@
 // Dados locais do Cognify (criança, plano e sessões de jogo)
-// Usamos localStorage porque a API não tem esses endpoints
 
 const CHAVE_CRIANCA = 'cognify_crianca'
 const CHAVE_PLANO = 'cognify_plano'
 const CHAVE_SESSOES = 'cognify_sessoes'
 
+// Fallback — preços espelham a API
 export const PLANOS = {
-  basico: { id: 'basico', nome: 'Básico', preco: 0, limiteJogos: 4 },
-  intermediario: { id: 'intermediario', nome: 'Intermediário', preco: 29, limiteJogos: 8 },
-  premium: { id: 'premium', nome: 'Premium', preco: 49, limiteJogos: 12 }
+  basico: {
+    id: 'basico', nome: 'Básico', limiteJogos: 4,
+    precos: { tdah: 0, tea: 0, dislexia: 0 }
+  },
+  intermediario: {
+    id: 'intermediario', nome: 'Intermediário', limiteJogos: 8,
+    precos: { tdah: 29, tea: 29, dislexia: 27 }
+  },
+  premium: {
+    id: 'premium', nome: 'Premium', limiteJogos: 12,
+    precos: { tdah: 49, tea: 49, dislexia: 45 }
+  }
+}
+
+export const NOMES_PERFIL = {
+  tdah: 'TDAH',
+  tea: 'TEA leve',
+  dislexia: 'Dislexia'
+}
+
+export function getPrecoPlano(planoId, transtorno) {
+  const plano = PLANOS[planoId]
+  if (!plano || !transtorno) return 0
+  return plano.precos[transtorno] ?? 0
+}
+
+export function formatarPrecoPlano(planoId, transtorno) {
+  const preco = getPrecoPlano(planoId, transtorno)
+  return preco === 0 ? 'Grátis' : 'R$ ' + preco + '/mês'
 }
 
 export function getCrianca() {
@@ -47,7 +73,6 @@ export function salvarSessao(sessao) {
   localStorage.setItem(CHAVE_SESSOES, JSON.stringify(lista))
 }
 
-// Regras simples de adaptação (sem IA)
 export function calcularAdaptacao(acertos, erros, tempo) {
   const total = acertos + erros
   if (total === 0) {

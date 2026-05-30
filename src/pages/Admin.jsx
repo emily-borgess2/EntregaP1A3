@@ -24,7 +24,7 @@ function Admin() {
   const [editEmpresaId, setEditEmpresaId] = useState(null)
 
   const [formJogo, setFormJogo] = useState({
-    nome: '', descricao: '', ano: '', preco: '', desconto: '', fkEmpresa: '', fkCategoria: ''
+    nome: '', descricao: '', ano: '', preco: 0, desconto: '', fkEmpresa: '', fkCategoria: '', perfilAprendizagem: 'tdah'
   })
   const [editJogoId, setEditJogoId] = useState(null)
 
@@ -94,10 +94,11 @@ function Admin() {
       nome: formJogo.nome,
       descricao: formJogo.descricao,
       ano: Number(formJogo.ano),
-      preco: Number(formJogo.preco),
-      desconto: formJogo.desconto ? Number(formJogo.desconto) : null,
+      preco: 0,
+      desconto: null,
       fkEmpresa: Number(formJogo.fkEmpresa),
-      fkCategoria: Number(formJogo.fkCategoria)
+      fkCategoria: Number(formJogo.fkCategoria),
+      perfilAprendizagem: formJogo.perfilAprendizagem
     }
 
     try {
@@ -108,7 +109,7 @@ function Admin() {
         await criarJogo(dados)
         setMsg('Jogo criado!')
       }
-      setFormJogo({ nome: '', descricao: '', ano: '', preco: '', desconto: '', fkEmpresa: '', fkCategoria: '' })
+      setFormJogo({ nome: '', descricao: '', ano: '', preco: 0, desconto: '', fkEmpresa: '', fkCategoria: '', perfilAprendizagem: 'tdah' })
       setEditJogoId(null)
       carregarDados()
     } catch (err) {
@@ -134,10 +135,11 @@ function Admin() {
       nome: jogo.nome,
       descricao: jogo.descricao || '',
       ano: jogo.ano,
-      preco: jogo.preco,
-      desconto: jogo.desconto || '',
+      preco: 0,
+      desconto: '',
       fkEmpresa: jogo.fk_empresa || jogo.fkEmpresa,
-      fkCategoria: jogo.fk_categoria || jogo.fkCategoria
+      fkCategoria: jogo.fk_categoria || jogo.fkCategoria,
+      perfilAprendizagem: jogo.perfil_aprendizagem || jogo.perfilAprendizagem || 'tdah'
     })
   }
 
@@ -146,7 +148,7 @@ function Admin() {
     return cat ? cat.nome : '-'
   }
 
-  function nomeEmpresa(id) {
+  function buscarNomeEmpresa(id) {
     const emp = empresas.find(e => e.id === id)
     return emp ? emp.nome : '-'
   }
@@ -209,14 +211,15 @@ function Admin() {
                 <input id="anoJogo" type="number" value={formJogo.ano} onChange={(e) => setFormJogo({ ...formJogo, ano: e.target.value })} required />
               </div>
               <div className="campo">
-                <label htmlFor="precoJogo">Preço</label>
-                <input id="precoJogo" type="number" step="0.01" value={formJogo.preco} onChange={(e) => setFormJogo({ ...formJogo, preco: e.target.value })} required />
-              </div>
-              <div className="campo">
-                <label htmlFor="descJogoVal">Desconto</label>
-                <input id="descJogoVal" type="number" step="0.01" value={formJogo.desconto} onChange={(e) => setFormJogo({ ...formJogo, desconto: e.target.value })} />
+                <label htmlFor="perfilJogo">Perfil de aprendizagem</label>
+                <select id="perfilJogo" value={formJogo.perfilAprendizagem} onChange={(e) => setFormJogo({ ...formJogo, perfilAprendizagem: e.target.value })} required>
+                  <option value="tdah">TDAH</option>
+                  <option value="tea">TEA leve</option>
+                  <option value="dislexia">Dislexia</option>
+                </select>
               </div>
             </div>
+            <p className="texto-pequeno">Jogos não têm preço — inclusos no plano.</p>
             <div className="form-linha">
               <div className="campo">
                 <label htmlFor="empresaJogo">Empresa</label>
@@ -245,7 +248,7 @@ function Admin() {
               const catId = jogo.fk_categoria || jogo.fkCategoria
               return (
                 <li key={jogo.id}>
-                  <span><strong>{jogo.nome}</strong> — R$ {jogo.preco} · {nomeEmpresa(empId)} · {nomeCategoria(catId)}</span>
+                  <span><strong>{jogo.nome}</strong> — {buscarNomeEmpresa(empId)} · {nomeCategoria(catId)} · {jogo.perfil_aprendizagem || jogo.perfilAprendizagem}</span>
                   <div>
                     <button type="button" className="btn btn-pequeno btn-secundario" onClick={() => editarJogo(jogo)}>Editar</button>
                     <button type="button" className="btn btn-pequeno btn-perigo" onClick={() => handleExcluirJogo(jogo.id)}>Excluir</button>

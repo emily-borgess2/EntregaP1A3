@@ -55,8 +55,12 @@ export async function register(nome, email, senha, dataNascimento) {
 }
 
 // --- Jogos ---
-export async function getJogos(categoria) {
-  const url = categoria ? '/jogos?categoria=' + categoria : '/jogos'
+export async function getJogos(perfil, categoria) {
+  let url = '/jogos'
+  const params = []
+  if (perfil) params.push('perfil=' + perfil)
+  if (categoria) params.push('categoria=' + encodeURIComponent(categoria))
+  if (params.length) url += '?' + params.join('&')
   return request(url)
 }
 
@@ -96,10 +100,16 @@ export async function getHistorico() {
   return request('/vendas')
 }
 
-export async function finalizarCompra() {
+export async function finalizarCompra(planoId, perfilAprendizagem) {
   return request('/vendas/checkout', {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify({ planoId, perfilAprendizagem })
   })
+}
+
+// --- Planos ---
+export async function getPlanos() {
+  return request('/planos')
 }
 
 export async function pagar(metodo, dados) {

@@ -13,7 +13,8 @@ function Home() {
   useEffect(function () {
     async function carregar() {
       try {
-        const listaJogos = await getJogos()
+        const perfil = crianca ? crianca.transtorno : null
+        const listaJogos = await getJogos(perfil)
         const listaCategorias = await getCategorias()
         setJogos(listaJogos ? listaJogos.slice(0, 4) : [])
         setCategorias(listaCategorias || [])

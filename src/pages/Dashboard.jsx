@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom'
-import { getCrianca, getPlano, getSessoes, PLANOS } from '../services/dadosLocais'
+import { getCrianca, getPlano, getSessoes, PLANOS, NOMES_PERFIL } from '../services/dadosLocais'
 
-const NOMES_TRANSTORNO = {
-  tdah: 'TDAH',
-  tea: 'TEA leve',
-  dislexia: 'Dislexia'
-}
+const NOMES_TRANSTORNO = NOMES_PERFIL
 
 function Dashboard() {
   const crianca = getCrianca()

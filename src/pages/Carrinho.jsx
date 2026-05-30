@@ -7,8 +7,11 @@ import {
   finalizarCompra,
   pagar
 } from '../services/api'
+import { getCrianca, getPlano, getPrecoPlano, NOMES_PERFIL, PLANOS } from '../services/dadosLocais'
 
 function Carrinho() {
+  const crianca = getCrianca()
+  const planoId = getPlano()
   const [itens, setItens] = useState([])
   const [jogosMap, setJogosMap] = useState({})
   const [erro, setErro] = useState('')
@@ -16,14 +19,19 @@ function Carrinho() {
   const [metodoPagamento, setMetodoPagamento] = useState('pix')
   const [carregando, setCarregando] = useState(true)
 
+  const precoPlano = crianca && planoId
+    ? getPrecoPlano(planoId, crianca.transtorno)
+    : 0
+  const nomePlano = planoId ? PLANOS[planoId].nome : '-'
+
   async function carregarCarrinho() {
     setCarregando(true)
     setErro('')
     try {
       const resposta = await getCarrinho()
-      const listaJogos = await getJogos()
+      const perfil = crianca ? crianca.transtorno : null
+      const listaJogos = await getJogos(perfil)
 
-      // Cria um mapa id -> jogo para facilitar
       const mapa = {}
       if (listaJogos) {
         listaJogos.forEach(function (j) {
@@ -51,7 +59,7 @@ function Carrinho() {
     setErro('')
     try {
       await removerDoCarrinho(jogoId)
-      setMsg('Item removido do carrinho.')
+      setMsg('Jogo removido do carrinho.')
       carregarCarrinho()
     } catch (err) {
       setErro(err.message)
@@ -61,31 +69,27 @@ function Carrinho() {
   async function handleFinalizar() {
     setErro('')
     setMsg('')
+    if (!planoId || !crianca) {
+      setErro('Selecione um plano e cadastre a criança antes de finalizar.')
+      return
+    }
     try {
-      // Primeiro simula o pagamento
       await pagar(metodoPagamento, { confirmado: true })
-      // Depois finaliza a compra
-      const resposta = await finalizarCompra()
-      setMsg(resposta.message || 'Compra realizada com sucesso!')
+      const resposta = await finalizarCompra(planoId, crianca.transtorno)
+      setMsg(resposta.message || 'Assinatura do plano confirmada!')
       setItens([])
     } catch (err) {
       setErro(err.message)
     }
   }
 
-  // Calcula total
-  let total = 0
-  itens.forEach(function (item) {
-    const jogo = jogosMap[item.fkJogo]
-    if (jogo) {
-      const preco = jogo.desconto ? jogo.preco - jogo.desconto : jogo.preco
-      total += preco
-    }
-  })
-
   return (
     <div className="pagina">
-      <h1>Carrinho de compras</h1>
+      <h1>Carrinho</h1>
+      <p className="texto-ajuda">
+        Os jogos não têm preço individual. Você paga a assinatura do plano
+        {crianca ? ' para o perfil ' + NOMES_PERFIL[crianca.transtorno] : ''}.
+      </p>
 
       {carregando && <p>Carregando carrinho...</p>}
       {erro && <p className="msg-erro" role="alert">{erro}</p>}
@@ -100,19 +104,27 @@ function Carrinho() {
 
       {itens.length > 0 && (
         <>
+          <div className="card-plano-resumo">
+            <p><strong>Plano:</strong> {nomePlano}</p>
+            {crianca && (
+              <p><strong>Perfil:</strong> {NOMES_PERFIL[crianca.transtorno]}</p>
+            )}
+            <p className="plano-preco">
+              {precoPlano === 0 ? 'Grátis' : 'R$ ' + precoPlano.toFixed(2) + '/mês'}
+            </p>
+          </div>
+
+          <h2>Jogos selecionados (inclusos no plano)</h2>
           <ul className="lista-carrinho">
             {itens.map(function (item) {
               const jogo = jogosMap[item.fkJogo]
               const nome = jogo ? jogo.nome : 'Jogo #' + item.fkJogo
-              const preco = jogo
-                ? (jogo.desconto ? jogo.preco - jogo.desconto : jogo.preco).toFixed(2)
-                : '0.00'
 
               return (
                 <li key={item.id} className="item-carrinho">
                   <div>
                     <strong>{nome}</strong>
-                    <p>R$ {preco}</p>
+                    <p className="incluso-plano">Incluso no plano</p>
                   </div>
                   <button
                     type="button"
@@ -125,8 +137,6 @@ function Carrinho() {
               )
             })}
           </ul>
-
-          <p className="total-carrinho">Total: <strong>R$ {total.toFixed(2)}</strong></p>
 
           <div className="pagamento">
             <h2>Forma de pagamento</h2>
@@ -144,7 +154,7 @@ function Carrinho() {
             </div>
 
             <button type="button" className="btn btn-primario btn-largo" onClick={handleFinalizar}>
-              Finalizar compra
+              Finalizar assinatura
             </button>
           </div>
         </>

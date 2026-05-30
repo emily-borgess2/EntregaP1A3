@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
+import { NOMES_PERFIL } from '../services/dadosLocais'
 
 function GameCard({ jogo, categorias }) {
-  // Busca nome da categoria pelo id
   let nomeCategoria = ''
   if (categorias && jogo.fk_categoria) {
     const cat = categorias.find(c => c.id === jogo.fk_categoria)
@@ -10,16 +10,15 @@ function GameCard({ jogo, categorias }) {
     nomeCategoria = jogo.categoria
   }
 
-  const precoFinal = jogo.desconto
-    ? (jogo.preco - jogo.desconto).toFixed(2)
-    : jogo.preco.toFixed(2)
+  const perfil = jogo.perfilAprendizagem || jogo.perfil_aprendizagem
 
   return (
     <article className="card-jogo">
       <div className="card-jogo-icone" aria-hidden="true">🎮</div>
       <h3>{jogo.nome}</h3>
-      {nomeCategoria && <span className="tag">{nomeCategoria}</span>}
-      <p className="preco">R$ {precoFinal}</p>
+      {perfil && <span className="tag">{NOMES_PERFIL[perfil] || perfil}</span>}
+      {nomeCategoria && <span className="tag tag-suave">{nomeCategoria}</span>}
+      <p className="incluso-plano">Incluso no plano</p>
       {jogo.id && (
         <Link to={'/jogos/' + jogo.id} className="btn btn-primario btn-pequeno">
           Ver detalhes

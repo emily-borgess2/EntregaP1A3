@@ -7,7 +7,7 @@ import {
   getMediaAvaliacoes,
   criarAvaliacao
 } from '../services/api'
-import { calcularAdaptacao } from '../services/dadosLocais'
+import { calcularAdaptacao, NOMES_PERFIL } from '../services/dadosLocais'
 
 // Simula adaptação com regras simples (sem IA) - preview na tela de detalhes
 function calcularAdaptacaoPreview(acertos, erros, tempo) {
@@ -86,17 +86,16 @@ function DetalheJogo() {
   if (!jogo && !erro) return <p>Carregando...</p>
   if (erro && !jogo) return <p className="msg-erro">{erro}</p>
 
-  const precoFinal = jogo.desconto
-    ? (jogo.preco - jogo.desconto).toFixed(2)
-    : jogo.preco.toFixed(2)
+  const perfil = jogo.perfilAprendizagem || jogo.perfil_aprendizagem
 
   return (
     <div className="pagina">
       <div className="detalhe-jogo">
         <div className="detalhe-info">
           <h1>{jogo.nome}</h1>
-          {categoria && <span className="tag">{categoria}</span>}
-          <p className="preco-grande">R$ {precoFinal}</p>
+          {perfil && <span className="tag">{NOMES_PERFIL[perfil] || perfil}</span>}
+          {categoria && <span className="tag tag-suave">{categoria}</span>}
+          <p className="incluso-plano">Incluso no plano — sem preço avulso</p>
           <p>{jogo.descricao || 'Jogo educativo adaptativo para crianças neurodivergentes.'}</p>
           <p><strong>Ano:</strong> {jogo.ano}</p>
 

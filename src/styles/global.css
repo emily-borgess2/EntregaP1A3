@@ -255,6 +255,31 @@ body {
   font-size: 0.8rem;
 }
 
+.incluso-plano {
+  color: var(--cor-primaria);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.tag-suave {
+  background: #eef2f7;
+  color: var(--cor-texto-claro);
+}
+
+.texto-pequeno {
+  font-size: 0.85rem;
+  color: var(--cor-texto-claro);
+  margin-bottom: 0.8rem;
+}
+
+.card-plano-resumo {
+  background: var(--cor-card);
+  padding: 1.2rem;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  margin-bottom: 1.5rem;
+}
+
 .preco {
   font-weight: bold;
   color: var(--cor-primaria);
