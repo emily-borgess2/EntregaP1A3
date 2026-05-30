@@ -89,10 +89,6 @@ src/
 └── main.jsx
 ```
 
-## Adaptação simulada
-
-O Cognify **não usa IA nem machine learning**. A adaptação nos detalhes do jogo usa regras simples baseadas em acertos, erros e tempo de resposta para ajustar dificuldade, tempo e estímulos visuais.
-
 ## Equipe
 
 Projeto acadêmico — Entrega P1 A3.
