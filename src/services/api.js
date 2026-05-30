@@ -126,7 +126,61 @@ export async function criarAvaliacao(jogoId, nota, comentario) {
 }
 
 // --- Relatórios ---
-export async function getJogosMaisVendidos(top) {
-  const qtd = top || 5
-  return request('/relatorios/jogos-mais-vendidos?top=' + qtd)
+export async function getJogosMaisVendidos(top, empresaId) {
+  let url = '/relatorios/jogos-mais-vendidos?top=' + (top || 5)
+  if (empresaId) {
+    url += '&empresa=' + empresaId
+  }
+  return request(url)
 }
+
+// --- Empresas (admin) ---
+export async function getEmpresas() {
+  return request('/empresas')
+}
+
+export async function criarEmpresa(nome) {
+  return request('/empresas', {
+    method: 'POST',
+    body: JSON.stringify({ nome })
+  })
+}
+
+export async function atualizarEmpresa(id, nome) {
+  return request('/empresas/' + id, {
+    method: 'PUT',
+    body: JSON.stringify({ nome })
+  })
+}
+
+export async function excluirEmpresa(id) {
+  return request('/empresas/' + id, {
+    method: 'DELETE'
+  })
+}
+
+// --- Jogos CRUD (admin) ---
+export async function criarJogo(dados) {
+  return request('/jogos', {
+    method: 'POST',
+    body: JSON.stringify(dados)
+  })
+}
+
+export async function atualizarJogo(id, dados) {
+  return request('/jogos/' + id, {
+    method: 'PUT',
+    body: JSON.stringify(dados)
+  })
+}
+
+export async function excluirJogo(id) {
+  return request('/jogos/' + id, {
+    method: 'DELETE'
+  })
+}
+
+export async function getCategoria(id) {
+  return request('/categorias/' + id)
+}
+

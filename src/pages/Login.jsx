@@ -30,9 +30,20 @@ function Login() {
         setModoCadastro(false)
       } else {
         const resposta = await login(email, senha)
-        localStorage.setItem('cognify_token', resposta.token)
+        const token = resposta.token
+        localStorage.setItem('cognify_token', token)
 
-        // Redireciona conforme onboarding
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]))
+          if (payload.perfil === 'Administrador') {
+            navigate('/admin')
+            setCarregando(false)
+            return
+          }
+        } catch (e) {
+          // segue fluxo normal
+        }
+
         const crianca = localStorage.getItem('cognify_crianca')
         const plano = localStorage.getItem('cognify_plano')
         if (!crianca) navigate('/cadastro-crianca')
@@ -120,9 +131,8 @@ function Login() {
         </p>
 
         <div className="login-dica">
-          <p><strong>Conta de teste:</strong></p>
-          <p>E-mail: cliente@avjd.com</p>
-          <p>Senha: cliente123</p>
+          <p><strong>Conta cliente:</strong> cliente@avjd.com / cliente123</p>
+          <p><strong>Conta admin:</strong> admin@avjd.com / admin123</p>
         </div>
       </div>
     </div>

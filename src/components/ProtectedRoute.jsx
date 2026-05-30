@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { getCrianca, getPlano } from '../services/dadosLocais'
+import { isAdmin } from '../services/auth'
 
 // Protege rotas que precisam de login e onboarding
 function ProtectedRoute({ children, semOnboarding }) {
@@ -10,8 +11,10 @@ function ProtectedRoute({ children, semOnboarding }) {
     return <Navigate to="/login" replace />
   }
 
-  // Rotas de onboarding não exigem criança/plano cadastrados
-  if (!semOnboarding) {
+  // Admin não precisa cadastrar criança/plano
+  const admin = isAdmin()
+
+  if (!semOnboarding && !admin) {
     const crianca = getCrianca()
     const plano = getPlano()
 
