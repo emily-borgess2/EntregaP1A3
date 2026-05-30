@@ -12,6 +12,8 @@ import CadastroCrianca from './pages/CadastroCrianca'
 import Planos from './pages/Planos'
 import Dashboard from './pages/Dashboard'
 import Jogar from './pages/Jogar'
+import Admin from './pages/Admin'
+import AdminRoute from './components/AdminRoute'
 
 function App() {
   return (
@@ -47,6 +49,9 @@ function App() {
         } />
         <Route path="/relatorios" element={
           <ProtectedRoute><Relatorios /></ProtectedRoute>
+        } />
+        <Route path="/admin" element={
+          <AdminRoute><Admin /></AdminRoute>
         } />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
